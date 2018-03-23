@@ -1,4 +1,4 @@
 language: node_js
 node_js:
   - "stable"
-script: travisTest
+script: /group3/assets/js/travisTest.js

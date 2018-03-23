@@ -8,6 +8,6 @@
   var ph = require('PHQ9Diag');
   var test = require('test');
 
-  testTravis.task('travis',['build','testServerJS'], function(){
+  cookies.task('travis',['build','testServerJS'], function(){
     process.exit(0);
   });

@@ -1,4 +1,6 @@
 language: node_js
 node_js:
   - "stable"
-script: travisTest
+before_script:
+  - npm install -g gulp-cli
+script: gulp

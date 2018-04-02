@@ -1,0 +1,16 @@
+{
+  "name": "esof423project",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ccw5241/ESOF-423_Prescribing_Pocket_Guide"
+  },
+  "description": "Simple test for our project",
+  "author": "Chris",
+  "version": "1.0.0",
+  "devDependencies": {
+    "jshint": "^2.8.0"
+  },
+  "scripts": {
+    "test": "./node_modules/jshint/bin/jshint testTravis.js"
+  }
+}

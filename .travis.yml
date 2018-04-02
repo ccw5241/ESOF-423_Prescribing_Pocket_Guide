@@ -3,7 +3,7 @@ node_js:
   - "stable"
   before_script:
   - npm install -g gulp-cli
-script: gulp "group3/assets/js/.."
+script: npm install gulp "group3/assets/js/.."
 notifications:
   email:
     on_success: never

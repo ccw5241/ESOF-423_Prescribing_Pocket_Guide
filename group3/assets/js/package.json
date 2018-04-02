@@ -5,7 +5,7 @@
     "url": "https://github.com/ccw5241/ESOF-423_Prescribing_Pocket_Guide"
   },
   "description": "Simple test for our project",
-  "author": "Chris",
+  "author": "ccw5241",
   "version": "1.0.0",
   "devDependencies": {
     "jshint": "^2.8.0"

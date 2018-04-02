@@ -11,6 +11,14 @@
     process.exit(0);
   });
 
-  cookie.task('travis',['build','testServerJS'], getCookieDataByKey("he"){
-    process.exit(0);
-  })
+  phq.task('travis',['build','testServerJS'], function(){
+    let total = 5;
+    var result = calcSeverity(total);
+    document.write("Result" + result);
+  });
+
+  mdqd.task('travis',['testServerJS'],function(){
+    let total = 3;
+    var test = printDiag(total);
+    document.write("result" + test);
+  });

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <?php 
 $navlink = "signup";
-include("includes/dbLogin.php"); 
+//include("includes/dbLogin.php"); 
 ?>
 
 <html div id="bg">
@@ -18,7 +18,8 @@ include("includes/dbLogin.php");
 	<link rel="shortcut icon" href="favicon.ico?t=<?=time()?>" type="image/ico" />
 	
 </head>
-
+<script type="text/javascript" src="assets/js/login.js?t=<?=time()?>"></script>
+<script type="text/javascript" src="assets/js/uniqueID.js?t=<?=time()?>"></script>
 <body>
 	<div id="cm-container">
 		<header>
@@ -29,7 +30,7 @@ include("includes/dbLogin.php");
 		</header>
 	</div>
 	<div class="mainContent">
-	<script type="text/javascript" src="assets/js/login.js?t=<?=time()?>"></script>
+	
 	<div class = "WelcomeBox">
 		<h1>Welcome</h1>
 		<div class = "LoginBox">

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <?php 
 $navlink = "patients";
 include("includes/header.php"); 
-include("includes/dbLogin.php"); 
+include("includes/DB_Interface/dbLogin.php"); 
 ?>
 <script>
 	var allPatients = {};
@@ -11,8 +11,10 @@ include("includes/dbLogin.php");
 		
 <html div id="bg">
 <script src="assets/js/Patient.js?t=<?=time()?>"></script>
+<script src="assets/js/Form.js?t=<?=time()?>"></script>
 <script src="assets/js/cookies.js?t=<?=time()?>"></script>
 <script type="text/javascript" src="assets/js/loadPatients.js?t=<?=time()?>"></script>
+<script type="text/javascript" src="assets/js/uniqueID.js?t=<?=time()?>"></script>
 <?php include("includes/modalPerson.php"); ?>
 <body onload="sideNavHeight(); modalPerson();" onscroll = "sideNavHeight();">
 	<div class="mainContent">
@@ -22,7 +24,7 @@ include("includes/dbLogin.php");
 			<!--<div id="highlightEach">-->
 				<ul id = "categories">
 					<li>Name</li><!--
-					--><li>Patient ID</li><!--
+					--><li>More Info</li><!--
 					--><li>Last Updated</li><!--
 					-->
 				</ul>

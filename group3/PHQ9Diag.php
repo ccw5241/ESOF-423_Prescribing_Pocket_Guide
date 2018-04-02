@@ -1,20 +1,23 @@
 <!DOCTYPE html>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <?php 
 $navlink = "PHQ9";
 include("includes/header.php"); 
-include("includes/dbLogin.php");
+//include("includes/dbLogin.php");
 ?>
 
 <html div id="bg">
 <script src="assets/js/Patient.js?t=<?=time()?>"></script>
+<script src="assets/js/Form.js?t=<?=time()?>"></script>
 <script src="assets/js/cookies.js?t=<?=time()?>"></script>
 <script src="assets/js/PHQ9Diag.js?t=<?=time()?>"></script>
-<script src="assets/js/createID.js?t=<?=time()?>"></script>
+<script src="assets/js/uniqueID.js?t=<?=time()?>"></script>
 
-<body onload="startValues(getCookieDataByKey('P_ID'), getCookieDataByKey('F_ID'));"">
+<body onload="startValues(getCookieDataByKey('P_ID'), getCookieDataByKey('F_ID'));">
 <div class="mainContent">
     <h1>Depression Questionnaire</h1>
     <form id="Questionnaire" action="/action_page.php">
+		
       1.) Little interest or pleasure in doing things:<br> <input type="number" min=0 max=3 name="q1"><br>
       2.) Feeling down, depressed or hopeless:<br> <input type="number" min=0 max=3 name="q2"><br>
       3.) Trouble falling asleep, staying asleep, or sleeping to much:<br> <input type=type="number" min=0 max=3 name="q3"><br>
@@ -25,7 +28,8 @@ include("includes/dbLogin.php");
       8.) Moving or speaking so slowly that other people have noticed, or the opposite:<br> <input type="number" min=0 max=3 name="q8"><br>
       9.) Thought that you'd be better off dead or hurting yourself in some way:<br> <input type="number" min=0 max=3 name="q9"><br>
       10.) On a scale of 1-4, How difficult have these problems made it for you do do your work, take care of daily life, or get along with others?<br> <input type="number" min=0 max=3 name="q10"><br>
-    </form>
+		
+	</form>
     
 	<input type="button" class="button" value="Diagnose" onClick="initializeQuestions(getCookieDataByKey('P_ID'))">
     

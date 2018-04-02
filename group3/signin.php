@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <?php 
 $navlink = "signin";
-include("includes/dbLogin.php"); 
+//include("includes/DB_Interface/dbLogin.php"); 
 ?>
 
 <html div id="bg">

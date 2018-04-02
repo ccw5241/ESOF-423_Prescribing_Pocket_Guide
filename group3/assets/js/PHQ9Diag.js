@@ -2,40 +2,49 @@
 
 var questionNum = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
 
+//start/onload function
+
+//create questionnaire callback function
+
 function startValues(P_ID, F_ID){
 	if(F_ID != "" && P_ID !=""){
-		var p = new Patient().dbFindConstructor(P_ID);
-		p.loadAnsFromDB(2);
+		var p = new Patient().simpleConstructor(P_ID);
+		p.loadAnsFromDB(addStartValues);
 	}
 }
 function addStartValues(patient){
 	var F_ID = getCookieDataByKey('F_ID');
 	let doc = document.getElementById("Questionnaire");
-	//populate with previous form
+	//populate with previous form answers
+	console.log(F_ID);
 	for (let i = 0; i < doc.length; i++) {
-		doc.elements[i].value = patient.ansPHQ9[F_ID][i]["ans"];
+		doc.elements[i].value = patient.forms[F_ID].attr["allAnswers"][i.toString()]["ans"];
 	}
-	
 }
 
 function initializeQuestions(P_ID) {
-	var p = new Patient().dbFindConstructor(P_ID);
-  let doc = document.getElementById("Questionnaire");
-  var filled = true;
-  for (let i = 0; i < doc.length; i++) {
-    questionNum[i] = doc.elements[i].value;
-	filled = filled && questionNum[i] != "";
-  }
-  var F_ID = getCookieDataByKey('F_ID');
-  if(F_ID !=""){
-	  diagnose();
-  }
-  else if(filled){
-	  diagnose();
-	  p.addAnsToDB(questionNum);
-  }else{
-	  alert("Form not Complete");
-  }
+	var p = new Patient().simpleConstructor(P_ID);
+	let doc = document.getElementById("Questionnaire");
+	var filled = true;
+	for (let i = 0; i < doc.length; i++) {
+		questionNum[i] = doc.elements[i].value;
+		filled = filled && questionNum[i] != "";
+	}
+	var F_ID = getCookieDataByKey('F_ID');
+	var Q_ID = getCookieDataByKey('Q_ID');
+	if(F_ID !=""){
+		diagnose();
+	}
+	else if(filled){
+		diagnose();
+		p.addAnsToDB(questionNum, 1, addDBCallback);
+	}else{
+		alert("Form not Complete");
+	}
+}
+
+function addDBCallback(result){
+	alert(result);
 }
 
 function diagnose() {

@@ -1,92 +1,81 @@
 class Patient {
 	constructor() {
-	this.P_ID = "";
-	this.fname = "";
-	this.mname = "";
-	this.lname = "";
-	this.updated = "";
-	//change to forms dictionary, using dict of form objects
-	//form objects will obviously have to be made similar to this Patient class
-	this.ansPHQ9 = {};
-	this.attr = {};
+		this.forms = {};
+		this.attr = {};
 	}
-	getFullName(){
-	  return this.fname + " " + this.mname + " " + this.lname;
-	}
+	//adds this patient to DB
 	addToDB(){
-	  
+		$.ajax({
+			type: "POST",
+			url: "includes/DB_Interface/addPatient.php",
+			data: this.attr,
+			success: function(result){
+				alert(result);
+			}
+		});
 	}
+	//delete this patient from the DB
 	deleteFromDB(){
-	  
+		//delete from DB
+		$.ajax({
+			type: "POST",
+			url: "includes/DB_Interface/removePatient.php",
+			data: {"P_ID": this.attr["P_ID"]},
+			success: function(result){
+				alert(result);
+			}
+		});
 	}
-	loadAnsFromDB(mode){
-		
-		var d = {"P_ID": this.P_ID};
+	//load forms belonging to this patient from DB
+	loadAnsFromDB(callback){
+		var d = {"P_ID": this.attr["P_ID"]};
+		var pat = this;
 		$.ajax({
 			type: "POST",
 			url: "includes/DB_Interface/findPatientForms.php",
 			data: d,
 			success: function(result){
-				this.ansPHQ9 = JSON.parse(result);
-				if(mode == 1){
-					addPastForms(this);
+				var dict = JSON.parse(result);
+				console.log(dict);
+				for(var f in dict){ //for each form make a form obj
+					pat.forms[f] = new Form().listConstructor(dict[f]);
+					console.log(pat.forms[f]);
 				}
-				else if(mode = 2){
-					addStartValues(this);
-				}
-				//console.log(Object.keys(this.ansPHQ9).length);
+				callback(pat);
 			}
 		});
-		
 	}
-	addAnsToDB(array){
-		var id = uniqueid();
-		var d = {"F_ID": id, "P_ID": this.P_ID, "numQ": array.length};
+	// create new form in DB owned by this patient
+	addAnsToDB(array, Q_ID, callback){
+		//var newForm = Form.listConstructor();
+		//console.log(newForm);
+		var id = uniqueID("F_");
+		var d = {"F_ID": id, "P_ID": this.attr["P_ID"], "Q_ID": Q_ID, "numQ": array.length};
 		for (var i = 0; i < array.length; i++) {
 			d[i] = array[i];
 		}
+		d["allAnswers"] = array;
 		$.ajax({
 			type: "POST",
 			url: "includes/DB_Interface/addForm.php",
 			data: d,
-			success: function(result){
-				if(result == 0){
-					alert("0")
-				}
-				else if(result ==1){
-					alert("1");
-				}
-				else{
-					alert(result);
-				}
-			}
+			success: callback
 		});
 	}
-
-	toCookie(){
-		return "P_ID="+this.P_ID;
-	}
 }
-//phase out this is favor of list/dict const
-Patient.prototype.manualConstructor = function (P_ID, fname, mname, lname) {
-    this.P_ID = P_ID;
-	this.fname = fname;
-	this.mname = mname;
-	this.lname = lname;
-	//this.ansPHQ9 = this.ansPHQ9.concat(["more","stuff"]);
-    return this;
-};
-Patient.prototype.dbFindConstructor = function (P_ID) {
-	this.P_ID = P_ID;
-	//read from DB
-	
+
+Patient.prototype.simpleConstructor = function (P_ID) {
+	this.attr["P_ID"] = P_ID;
 	return this;
 };
 Patient.prototype.listConstructor = function (list) {
-	this.P_ID = list["P_ID"];
-	this.fname = list["fname"];
-	this.mname = list["mname"];
-	this.lname = list["lname"];
-	this.updated = list["fname"];
+	if(list["P_ID"] == undefined){
+		console.log(list);
+	}
+	this.attr["P_ID"] = list["P_ID"];
+	this.attr["fname"] = list["fname"];
+	this.attr["mname"] = list["mname"];
+	this.attr["lname"] = list["lname"];
+	this.attr["updated"] = list["updated"];
 	return this;
 };

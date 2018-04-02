@@ -26,7 +26,7 @@ function login(){
 	var pass = document.forms["pass"]["password"].value;
 	$.ajax({
 		type: "POST",
-		url: "includes/userLogin.php",
+		url: "includes/DB_Interface/userLogin.php",
 		data: {"user": name, "pass": pass},
 		success: function(result){
 			if(result == 0){
@@ -53,10 +53,11 @@ function signup(){
 		alert("Passwords did not match");
 		return;
 	}
+	var id = uniqueID("U_");
 	$.ajax({
 		type: "POST",
-		url: "includes/addUser.php",
-		data: {"U_ID": name, "pass": pass, "username": name},
+		url: "includes/DB_Interface/addUser.php",
+		data: {"U_ID": id, "pass": pass, "username": name},
 		success: function(result){
 			if(result == 0){
 				//localStorage.setItem('user', name);

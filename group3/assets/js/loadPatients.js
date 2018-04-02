@@ -5,11 +5,16 @@ function addNew(){
 	var lName = document.getElementById("lName");
 	var x = document.getElementById("x");
 	if(fName.value && mName.value && lName.value && x.value){
-		var name = fName.value + " " + lName.value;
-		//call php function using newly patient info
-		var id = dbWritePatient(fName.value, mName.value, lName.value, x.value);
+		//add to DB using new patient info
+		id = uniqueID("P_");
+		var data = {"P_ID": id, "fname": fName.value, "lname": lName.value, "mname": mName.value, "x": x.value, "updated": "Just Now"};
+		var newPat = new Patient().listConstructor(data);
+		newPat.addToDB();
+		//dbWritePatient(data);
 		//write this new info to the page
-		loadOne(name, id, "Just Now");
+		allPatients[data['P_ID']] = newPat;
+		loadOne(newPat);
+		//close modal
 		var modal = document.getElementById('myModal');
 		modal.style.display = "none";
 	}else{
@@ -17,7 +22,12 @@ function addNew(){
 	}
 }
 //loads a single patient in the list  
-function loadOne(inName, inX, inDate){
+function loadOne(patientObj){
+	var inName = patientObj.attr["fname"] + " " + patientObj.attr["lname"];
+	//var inX = patientObj.attr["P_ID"];
+	var inX = "Extra Info";
+	var inDate = patientObj.attr["updated"];
+	
 	var wholeList = document.getElementById("allPatients");
 	var patient = document.createElement("li");
 	var name = document.createElement("li");
@@ -46,25 +56,13 @@ function loadOne(inName, inX, inDate){
 	patient.appendChild(pList);
 	patient.id= "person";
 	wholeList.appendChild(patient);
+	patientObj.attr["listItem"] = patient;
 }
-//recieves single person(patient) and breaks down to load on page
-function dbLoadPatient(pat){
-	name = pat["fname"] + " " + pat["lname"];
-	loadOne(name, pat["P_ID"], pat["updated"]);
-	allPatients[pat['P_ID']] = pat;
-}
-//writes input data into database via php
-function dbWritePatient(fName, mName, lName, x){
-	var id = uniqueid();
-	$.ajax({
-		type: "POST",
-		url: "includes/addPatient.php",
-		data: {"P_ID": id, "fName": fName, "lName": lName, "mName": mName, "x": x},
-		success: function(result){
-			alert(result);
-		}
-	});
-	return id;
+//receives single patientList and generates Patient Object to load on page
+function dbLoadPatient(patList){
+	var newPat = new Patient().listConstructor(patList);
+	allPatients[patList['P_ID']] = newPat;
+	loadOne(newPat);
 }
 function delImgCreate() {
 	var img = new Image(25,25);
@@ -81,43 +79,62 @@ function editImgCreate() {
 }
 //deletes a patient when delete icon is clicked
 function deletePatient(delItem, e){
-	//delete li person Item
-	var items = delItem.parentElement.parentElement.getElementsByTagName("li");
-	var delID = items[3].textContent;
-	var delPerson = delItem.parentElement.parentElement.parentElement;
-	delPerson.parentNode.removeChild(delPerson);
-	//delete from DB
-	$.ajax({
-		type: "POST",
-		url: "includes/removePatient.php",
-		data: {"P_ID": delID},
-		success: function(result){
-			alert(result);
+	//delete li patient Item
+	var delListItem = delItem.parentElement.parentElement.parentElement;
+	delListItem.parentNode.removeChild(delListItem);
+	
+	//find patient selected
+	var delID;
+	for (var patID in allPatients){
+		if(allPatients[patID].attr['listItem'] == delListItem){
+			delID = patID;
 		}
-	});
+	}
+	var newPat = new Patient().simpleConstructor(delID);
+	newPat.deleteFromDB();
+	delete allPatients[delID];
+	
 	sideNavHeight();
     return false;
 }
 function editPatient(editItem, e){
+	//find selected patient
+	var editListItem = editItem.parentElement.parentElement.parentElement;
+	var editID;
+	for (var patID in allPatients){
+		if(allPatients[patID].attr['listItem'] == editListItem){
+			editID = patID;
+		}
+	}
+	
+	//alter modal
 	var modal = document.getElementById('myModal');
-	var items = editItem.parentElement.parentElement.getElementsByTagName("li");
-	var editID = items[3].textContent;
 	document.cookie="P_ID="+editID;
-	var editPerson = editItem.parentElement.parentElement.parentElement;
 	modal.getElementsByTagName("h1")[0].textContent = "Edit";
 	modal.style.display = "block";
-	
+	//preload patient info
+	var fName = document.getElementById("fName");
+	var mName = document.getElementById("mName");
+	var lName = document.getElementById("lName");
+	var x = document.getElementById("x");
+	fName.value = allPatients[editID].attr["fname"];
+	mName.value = allPatients[editID].attr["mname"];
+	lName.value = allPatients[editID].attr["lname"];
+	x.value = "Unused";
+	//alter Form review dropdown
 	var allForms = document.getElementsByClassName("dropdown")[0];
 	allForms.style.display = "block";
+	//change text of submit button
 	var submitBtn = document.getElementById("modalSubmit");
 	submitBtn.value = "Save"
+	//Show new PHQ9 button
 	var PHQ9Btn = document.getElementById("modalPHQ9");
 	PHQ9Btn.style.display = "block";
 	
-	var p = new Patient().dbFindConstructor(editID);
-	p.loadAnsFromDB(1);
+	//load answers from database, then callback addPastForms when it finishes
+	allPatients[editID].loadAnsFromDB(addPastForms);
 }
-//called from patient class to populate past forms dropdown
+//callback from patient class to populate past forms dropdown
 function addPastForms(patient){
 	var allForms = document.getElementById("myDropdown");
 	//delete anything in there
@@ -125,15 +142,25 @@ function addPastForms(patient){
 		allForms.removeChild(allForms.firstChild);
 	}
 	
-	for(var key in patient.ansPHQ9){
+	for(var key in patient.forms){
 		var listItem = document.createElement("a");
-		listItem.appendChild(document.createTextNode(key));
+		patient.forms[key].attr["listItem"] = listItem;
+		listItem.appendChild(document.createTextNode(patient.forms[key].attr["time"]));
 		listItem.setAttribute("onclick", "reviewForm(this,event);");
 		allForms.appendChild(listItem);
 	}
+		
 }
-function reviewForm(f, e){
-	document.cookie="F_ID="+f.textContent;
+function reviewForm(formListItem, e){
+	//search all forms of all patients for selected one
+	for (var patID in allPatients){
+		for(var formID in allPatients[patID].forms){
+			if(allPatients[patID].forms[formID].attr['listItem'] == formListItem){
+				F_ID = formID;
+			}
+		}
+	}
+	document.cookie="F_ID="+F_ID;
 	document.location.href = "PHQ9Diag.php";
 	window.location.href = "PHQ9Diag.php";
 }
@@ -142,18 +169,6 @@ function doNewPHQ9(){
 	document.cookie="F_ID=";
 	document.location.href = "PHQ9Diag.php";
 	window.location.href = "PHQ9Diag.php";
-}
-
-
-//finds a unique ID
-function uniqueid() {
-    var ALPHABET = '023456789abcdefghijkmnopqrstuvwxyz';//no l, 1, or uppercases here
-    var ID_LENGTH = 12;
-    var rtn = '';
-    for (var i = 0; i < ID_LENGTH; i++) {
-      rtn += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
-    }
-    return rtn;
 }
 
 function sideNavHeight(){

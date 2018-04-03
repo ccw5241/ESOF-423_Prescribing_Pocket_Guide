@@ -42,10 +42,3 @@ Instructions, directions and features:
 	patients added permanently via database
 		patients contain fname, lname, mname, updated, 
 		email, and phone variables
-
-Known Bugs:
-	Failed to delete message appears when deleting patient
-		Due to related forms not being deleted too
-	Patients page side nav bar height varies at times
-	Sometimes multiple clicks are needed to trigger edit patient popup
-	Diagnosis message width sometimes goes past the body

@@ -32,6 +32,7 @@ function initializeQuestions(P_ID) {
 	}
 	var F_ID = getCookieDataByKey('F_ID');
 	var Q_ID = getCookieDataByKey('Q_ID');
+	// reorder needed!
 	if(F_ID !=""){
 		diagnose();
 	}

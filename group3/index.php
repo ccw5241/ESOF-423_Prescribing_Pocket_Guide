@@ -43,6 +43,15 @@ $navlink = "frontPage";
 			the 'sign up' and 'sign in' pages respectively. However, these are very much not the final 
 			iterations and are not intended for use as a secure account at this moment.
 		</p><p>
+			Upon creating an account and logging in, the main dashboard will be the first page you will be redirected to.
+			This page is still under construction, but the patients tab is functional. 
+			Here a patient can be added using the tab on the left, then edited using the edit 
+			icon next to the patient in question; resulting in a secondary, pop-up screen. 
+			Editing patient information is currently unsupported, 
+			however, adding new and reviewing past PHQ9 Forms can be done on this pop-up window.
+			Deletion of a patient is done in a similar fashion to editing; just instead by 
+			selecting the trash can icon for the corresponding patient.
+		</p><p>
 			Below a link can be found that will allow for bug tracking and will automatically 
 			notify and save your response for review. In doing so, please provide detailed 
 			information describing what the bug is, what browser you are using, exact steps to 

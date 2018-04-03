@@ -31,7 +31,7 @@ $navlink = "frontPage";
 		<h2>Overview</h2>
 		<p>
 			The repository for this project can be found at: 
-			<a href = "https://github.com/Gibbedboy/ESOF-423_Prescribing_Pocket_Guide">ESOF-423 Prescribing Pocket Guide</a> 
+			<a href = "https://github.com/ccw5241/ESOF-423_Prescribing_Pocket_Guide">ESOF-423 Prescribing Pocket Guide</a> 
 			where the latest source code can be downloaded.
 		</p><p>
 			The separate web pages are all contained in the root directory and are php files to 

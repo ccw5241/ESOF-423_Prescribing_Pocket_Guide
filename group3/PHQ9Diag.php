@@ -27,7 +27,7 @@ include("includes/header.php");
       7.) Trouble concentrating on things such as reading the newspaper or watching TV:<br> <input type="number" min=0 max=3 name="q7"><br>
       8.) Moving or speaking so slowly that other people have noticed, or the opposite:<br> <input type="number" min=0 max=3 name="q8"><br>
       9.) Thought that you'd be better off dead or hurting yourself in some way:<br> <input type="number" min=0 max=3 name="q9"><br>
-      10.) On a scale of 1-4, How difficult have these problems made it for you do do your work, take care of daily life, or get along with others?<br> <input type="number" min=0 max=3 name="q10"><br>
+      10.) On a scale of 1-4, How difficult have these problems made it for you to do your work, take care of daily life, or get along with others?<br> <input type="number" min=0 max=3 name="q10"><br>
 		
 	</form>
     

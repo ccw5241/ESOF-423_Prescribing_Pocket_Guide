@@ -1,13 +1,13 @@
 function onload(P_ID, F_ID, Q_ID){
-	//add questions
+	//add questions to UI
 	if(Q_ID != ""){
-		//var q = new Questionnaire.simpleConstructor(Q_ID);
-		//q.loadFromDB(addQuestions)
+		var q = new Questionnaire.simpleConstructor(Q_ID);
+		q.loadFromDB(addQuestions)
 	}else{
 		alert("Error: No Questionnaire Selected");
 	}
 	
-	//move to callback function of above (addQuestions)
+	//move to callback function (addQuestions)
 	if(F_ID != "" && P_ID !="" && Q_ID !=""){
 		var p = new Patient().simpleConstructor(P_ID);
 		p.loadAnsFromDB(addStartValues);

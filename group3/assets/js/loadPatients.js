@@ -161,14 +161,15 @@ function reviewForm(formListItem, e){
 		}
 	}
 	document.cookie="F_ID="+F_ID;
-	document.location.href = "PHQ9Diag.php";
-	window.location.href = "PHQ9Diag.php";
+	document.location.href = "makeForm.php";
+	window.location.href = "makeForm.php";
 }
 
 function doNewPHQ9(){
 	document.cookie="F_ID=";
-	document.location.href = "PHQ9Diag.php";
-	window.location.href = "PHQ9Diag.php";
+	document.cookie="Q_ID=Q_1"
+	document.location.href = "makeForm.php";
+	window.location.href = "makeForm.php";
 }
 
 function sideNavHeight(){

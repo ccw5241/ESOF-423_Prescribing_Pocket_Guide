@@ -5,6 +5,12 @@ Useful links for the coding standards the client wants (I think)
 http://fhir.cerner.com/millennium/dstu2/
 https://docs.healtheintent.com/#introduction
 
+v1.5 - 
+	added custom questionnaire creation (minus logic creation)
+	made add questionnaire support for server side 
+		adds questionnaire, diagnosis, QSections, questions, and options titles.
+	Form creation and review disabled as it is moved over to new system
+
 v1.4 - 
 	implemented new database on remote machine to fix any initial problems
 	halfway done with brand new:

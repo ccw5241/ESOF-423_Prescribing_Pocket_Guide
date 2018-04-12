@@ -7,11 +7,9 @@
 	$P_ID = mysqli_real_escape_string($dbconnect, $_POST["P_ID"]);
 	$Q_ID = mysqli_real_escape_string($dbconnect, $_POST["Q_ID"]);//questionnaire ID
 	$numQ = mysqli_real_escape_string($dbconnect, $_POST["numQ"]);
-	//$allAns = mysqli_real_escape_string($dbconnect, $_POST['allAnswers']);
-	if($numQ != 10){
-		echo "ERROR: Form Not Completed.";
-		return;
-	}
+	$allAns = mysqli_real_escape_string($dbconnect, $_POST['allAnswers']);
+	$allAns = json_decode(stripslashes($allAns), true);
+	echo(json_encode($allAns));
 	//generate array from posted indexes
 	$array = array();
 	for ($i = 0; $i < $numQ; $i++) {
@@ -42,14 +40,14 @@
 		$questions[$row["Qu_ID"]] = $row;
 		//$indexQu = $indexQu + 1;
 	}
-	echo("".json_encode($questions)."     ");
+	//echo("".json_encode($questions)."     ");
 	
 	//create answers of this form
 	foreach($questions as $Qu_ID => $item){
 		//$Qu_ID = $questions[(string)$i]["Qu_ID"];
 		$answer = $array[$item["num"]-1];
-		echo(" ".json_encode($item["num"]-1));
-		echo(": ".json_encode($answer));
+		//echo(" ".json_encode($item["num"]-1));
+		//echo(": ".json_encode($answer));
 		$ansInsert = "INSERT INTO Answer(ans, Question_Qu_ID, Form_F_ID) VALUES('$answer', '$Qu_ID', '$F_ID');";
 		$success = $success && mysqli_query($dbconnect, $ansInsert);
 	}

@@ -36,7 +36,6 @@ class Patient {
 			data: d,
 			success: function(result){
 				var dict = JSON.parse(result);
-				console.log(dict);
 				for(var f in dict){ //for each form make a form obj
 					pat.forms[f] = new Form().listConstructor(dict[f]);
 					console.log(pat.forms[f]);
@@ -51,10 +50,10 @@ class Patient {
 		//console.log(newForm);
 		var id = uniqueID("F_");
 		var d = {"F_ID": id, "P_ID": this.attr["P_ID"], "Q_ID": Q_ID, "numQ": array.length};
-		for (var i = 0; i < array.length; i++) {
-			d[i] = array[i];
-		}
-		d["allAnswers"] = array;
+		//for (var i = 0; i < array.length; i++) {
+		//	d[i] = array[i];
+		//}
+		d["allAnswers"] = JSON.stringify(array);
 		$.ajax({
 			type: "POST",
 			url: "includes/DB_Interface/addForm.php",

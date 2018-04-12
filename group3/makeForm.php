@@ -9,14 +9,16 @@ include("includes/header.php");
 <html div id="bg">
 <script src="assets/js/Patient.js?t=<?=time()?>"></script>
 <script src="assets/js/Form.js?t=<?=time()?>"></script>
+<script src="assets/js/Questionnaire.js?t=<?=time()?>"></script>
 <script src="assets/js/cookies.js?t=<?=time()?>"></script>
 <script src="assets/js/makeForm.js?t=<?=time()?>"></script>
 <script src="assets/js/uniqueID.js?t=<?=time()?>"></script>
 
 <body onload="onload(getCookieDataByKey('P_ID'), getCookieDataByKey('F_ID'), getCookieDataByKey('Q_ID'));">
 <div class="mainContent">
-    <h1>Depression Questionnaire</h1>
-    <form id="Questionnaire" action="">
+    <h1 id = "title">Depression Questionnaire</h1>
+    <form id = "QuestionnaireForm" action = "" onsubmit="submitTester(this); return false;" method = "post">
+		<div id = "Questionnaire">
 		<!--
       1.) Little interest or pleasure in doing things:<br> <input type="number" min=0 max=3 name="q1"><br>
       2.) Feeling down, depressed or hopeless:<br> <input type="number" min=0 max=3 name="q2"><br>
@@ -30,12 +32,12 @@ include("includes/header.php");
       10.) On a scale of 0-3, How difficult have these problems made it for you do do your work, take care of daily life, or get along with others?<br> <input type="number" min=0 max=3 name="q10"><br>
 		-->
 		
-		
+		</div>
+		<input type="submit" class="button" value="Diagnose">
 	</form>
-    
-	<input type="button" class="button" value="Diagnose" onClick="initializeQuestions(getCookieDataByKey('P_ID'))">
-    
-    <p id="display"></p>
+    <br>
+	<br>
+    <div id="display"></div>
 </div> 
 </body>
   

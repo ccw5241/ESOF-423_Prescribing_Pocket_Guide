@@ -22,7 +22,7 @@
 		}
 		$F_ID = $row["F_ID"];
 		$findAns = mysqli_query($dbconnect, 
-			"SELECT A.*, Qu.num FROM Answer A
+			"SELECT A.*, Qu.qu_num FROM Answer A
 			Join Question Qu on Qu.Qu_ID = A.Question_Qu_ID
 			where A.Form_F_ID = '$F_ID';")
 			or die (mysqli_error($dbconnect));
@@ -36,7 +36,7 @@
 				$j = $j+1;
 			}
 			//add cleaned answers to form according to which question 'num' it is
-			$row[(string)$ans["num"]-1] = $ans;
+			$row[(string)$ans["qu_num"]-1] = $ans;
 			//$i= $i + 1;
 		}
 		//add form to list of all forms for this patient

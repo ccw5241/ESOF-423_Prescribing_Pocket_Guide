@@ -26,7 +26,7 @@
 	//should be only one base diagnosis ran for outer for loop
 	foreach ($Diagnosis as $top_D_ID => $mainDiagnosis){
 		$success = $success && createDiagnosis($dbconnect, $Q_ID, $mainDiagnosis, null);
-		//for every sub diagnosis: (no children support yet)
+		//for every sub diagnosis: (no children of children support yet)
 		foreach ($mainDiagnosis as $D_ID => $diagData){
 			if(strpos($D_ID, 'D_ID') === false && strpos($D_ID, 'D_') !== false){
 				$success = $success && createDiagnosis($dbconnect, $Q_ID, $diagData, $top_D_ID);

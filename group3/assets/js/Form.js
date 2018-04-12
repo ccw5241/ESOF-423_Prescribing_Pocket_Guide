@@ -1,6 +1,7 @@
 class Form{
 	constructor() {
 		this.attr = {};
+		this.attr["answers"] = {};
 	}
 	
 }
@@ -20,7 +21,8 @@ Form.prototype.listConstructor = function (list) {
 	this.attr["name"] = list["name"];
 	this.attr["time"] = list["time"];
 	this.attr["type"] = list["type"];
-	
+	//FORMAT: attr["answers"]
+	this.attr["answers"] = list["answers"];
 	//array of answers
 	var answers = {};
 	let i=0;

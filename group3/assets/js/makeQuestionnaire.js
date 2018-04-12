@@ -1,6 +1,22 @@
 function onloadQuestionnaire(){
+	//genPHQ9();
 	
-	
+}
+
+function copyQu_ID(clickedElem){
+	divItem = clickedElem.parentElement;
+	alert("copied");
+	for(var Qu_ID in q.attr["QuLinks"]){
+		if(q.attr["QuLinks"][Qu_ID] == divItem){
+			var textBox = divItem.getElementsByClassName("qu_text")[0]
+			var saveStr = textBox.value;
+			textBox.value = '$answers["' + Qu_ID + '"]["ans"]'; //$answers["Qu_xxxx"]["ans"]
+			textBox.select();
+			document.execCommand("Copy");// copy to clipboard
+			//reload original text
+			textBox.value = saveStr;
+		}
+	}
 }
 
 function numAnswersChanged(elem) {
@@ -201,8 +217,16 @@ function createQuestion(button){
 	var newField = document.createElement('div');
 	newField.className = "Question";
 	//add text inputs
-	t = createTextInput("qu_text", "Question Text");
+	var t = createTextInput("qu_text", "Question Text");
 	newField = addTextInput(newField, t);
+	//add copy button
+	var copy = document.createElement("input");
+	copy.type = "button";
+	copy.value = "Copy ID";
+	copy.className = "button";
+	copy.style.marginLeft = "10px";
+	copy.onclick = function(){copyQu_ID(copy);};
+	newField.appendChild(copy);
 	//add whole thing;
 	fieldLocation.appendChild(newField);
 	//append Diagnosis/Field div linkage to this Questionnaire

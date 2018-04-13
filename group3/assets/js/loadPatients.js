@@ -21,20 +21,20 @@ function addNew(){
 		alert("Please fill out all information fields");
 	}
 }
-//loads a single patient in the list  
+//loads a single patient in the list
 function loadOne(patientObj){
 	var inName = patientObj.attr["fname"] + " " + patientObj.attr["lname"];
 	//var inX = patientObj.attr["P_ID"];
 	var inX = "Extra Info";
 	var inDate = patientObj.attr["updated"];
-	
+
 	var wholeList = document.getElementById("allPatients");
 	var patient = document.createElement("li");
 	var name = document.createElement("li");
 	var x = document.createElement("li");
 	var date = document.createElement("li");
 	var pList = document.createElement("ul");
-	
+
 	var imgDel = delImgCreate();
 	var imgEdit = editImgCreate();
 	var liDel = document.createElement("li");
@@ -43,7 +43,7 @@ function loadOne(patientObj){
 	liEdit.id = "highlightEach";
 	liDel.appendChild(imgDel);
 	liEdit.appendChild(imgEdit);
-	
+
 	name.appendChild(document.createTextNode(inName));
 	x.appendChild(document.createTextNode(inX));
 	date.appendChild(document.createTextNode(inDate));
@@ -52,7 +52,7 @@ function loadOne(patientObj){
 	pList.appendChild(name);
 	pList.appendChild(x);
 	pList.appendChild(date);
-	
+
 	patient.appendChild(pList);
 	patient.id= "person";
 	wholeList.appendChild(patient);
@@ -82,7 +82,7 @@ function deletePatient(delItem, e){
 	//delete li patient Item
 	var delListItem = delItem.parentElement.parentElement.parentElement;
 	delListItem.parentNode.removeChild(delListItem);
-	
+
 	//find patient selected
 	var delID;
 	for (var patID in allPatients){
@@ -93,7 +93,7 @@ function deletePatient(delItem, e){
 	var newPat = new Patient().simpleConstructor(delID);
 	newPat.deleteFromDB();
 	delete allPatients[delID];
-	
+
 	sideNavHeight();
     return false;
 }
@@ -106,7 +106,7 @@ function editPatient(editItem, e){
 			editID = patID;
 		}
 	}
-	
+
 	//alter modal
 	var modal = document.getElementById('myModal');
 	document.cookie="P_ID="+editID;
@@ -130,7 +130,7 @@ function editPatient(editItem, e){
 	//Show new PHQ9 button
 	var PHQ9Btn = document.getElementById("modalPHQ9");
 	PHQ9Btn.style.display = "block";
-	
+
 	//load answers from database, then callback addPastForms when it finishes
 	allPatients[editID].loadAnsFromDB(addPastForms);
 }
@@ -141,7 +141,7 @@ function addPastForms(patient){
 	while(allForms.hasChildNodes()){
 		allForms.removeChild(allForms.firstChild);
 	}
-	
+
 	for(var key in patient.forms){
 		var listItem = document.createElement("a");
 		patient.forms[key].attr["listItem"] = listItem;
@@ -149,7 +149,7 @@ function addPastForms(patient){
 		listItem.setAttribute("onclick", "reviewForm(this,event);");
 		allForms.appendChild(listItem);
 	}
-		
+
 }
 function reviewForm(formListItem, e){
 	//search all forms of all patients for selected one
@@ -186,3 +186,23 @@ function sideNavHeight(){
 		nav.style.height = newH.toString()+"px";
 	}
 }
+
+
+//unit test for addNew method
+var unitTests = {};
+
+unitTests.addNew = function(method){
+	var fName1 = "Cao";
+	var mName1 = "N";
+	var lName1 = "Chenwei"
+	var m = 1;
+	var result = fName1&&mName1&&lName1&&m
+	}
+	if(method(str) === result){
+		return true;
+	}else{
+		return false;
+	}
+};
+
+console.log(unitTests.addNew(addNew));

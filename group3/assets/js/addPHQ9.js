@@ -90,7 +90,7 @@ function onload(){
 			}
 		}
 	};
-	
+
 	$.ajax({
 		type: "POST",
 		url: "includes/DB_Interface/addQuestionnaire.php",
@@ -103,3 +103,23 @@ function onload(){
 		}
 	});
 }
+
+//add unit test here to test onload
+var unitTests = {};
+
+unitTests.onload = function(method){
+	var str = {
+		'Qu_10' : {
+			'Qu_ID' : 'Qu_10',
+			'qu_text' : 'q10',
+			'qu_num' : '10'
+	}
+	var result = PHQ9;
+	if(method(str) === result){
+		return true;
+	}else{
+		return false;
+	}
+};
+
+console.log(unitTests.onload(onload));

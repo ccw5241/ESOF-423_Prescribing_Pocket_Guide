@@ -8,3 +8,19 @@ function uniqueid() {
     }
     return rtn;
 }
+
+
+//create unit test to make sure the uppercase didnot work
+var unitTests = {};
+
+unitTests.uniqueid = function(method){
+	var str = "anything"
+	var result = str.toUpperCase();
+	if(method(str) === result){
+		return false;
+	}else{
+		return true;
+	}
+};
+
+console.log(unitTests.uniquied(uniquied));

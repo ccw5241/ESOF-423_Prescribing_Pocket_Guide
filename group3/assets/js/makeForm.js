@@ -22,7 +22,7 @@ function addQuestions(quest){
 		titleStr = q.attr["name"];
 	}
 	title.innerHTML = titleStr + " Questionnaire";
-	
+
 	var allQSections = q.getAllQSections();
 	//Format: allQuestions['Qu_ID'] = {'Qu_ID': ___, 'qu_text': ____, 'qu_num': ____, 'QSection_QS_ID': QS_xxxx}
 	var allQuestions = q.getAllQuestions();
@@ -61,7 +61,7 @@ function addQuestions(quest){
 		curQSectionItem.appendChild(document.createElement('br'));
 	}
 	curQSectionItem.appendChild(document.createElement('br'));
-	
+
 	F_ID = getCookieDataByKey('F_ID');
 	P_ID = getCookieDataByKey('P_ID');
 	Q_ID = getCookieDataByKey('Q_ID');
@@ -149,7 +149,7 @@ function initializeDiagnosis(form){
 													'Qu_ID': allQuestions[key]['Qu_ID'],
 													'QSection_QS_ID': allQuestions[key]['QSection_QS_ID']};
 	}
-	
+
 	//make answers array and Dict
 	var inputs = form.getElementsByClassName("qu");
 	var formAnswers = new Array();
@@ -170,7 +170,7 @@ function initializeDiagnosis(form){
 	}
 	console.log(formAnswers);
 	console.log(answers);
-	
+
 	//make dummy patient to add form to DB
 	F_ID = getCookieDataByKey('F_ID');
 	P_ID = getCookieDataByKey('P_ID');
@@ -178,7 +178,7 @@ function initializeDiagnosis(form){
 		var pat = new Patient().simpleConstructor(P_ID);
 		pat.addAnsToDB(formAnswers, q.attr["Q_ID"], dbSubmitResponse);
 	}
-	
+
 	//printout Diagnosis:
 	q.evaluateDiagnosis(answers, printoutDiag);
 }
@@ -235,3 +235,19 @@ function printoutDiag(evalReturn){
 function dbSubmitResponse(){
 	alert("Successfully added form");
 }
+
+
+var unitTests = {};
+
+unitTests.addStartValues = function(method){
+	var st =1;
+	var result = st.getCookieDataByKey("1");
+}
+	if(method(st === result){
+		return true;
+	}else{
+		return false;
+	}
+};
+
+console.log(unitTests.addStartValues(addStartValues));

@@ -5,6 +5,12 @@ Useful links for the coding standards the client wants (I think)
 http://fhir.cerner.com/millennium/dstu2/
 https://docs.healtheintent.com/#introduction
 
+v1.6 - 
+	full questionnaire creation available
+	form creation fully modular
+	questionnaire creation fully modular
+	diagnosis logic evaluation and response added
+
 v1.5 - 
 	added custom questionnaire creation (minus logic creation)
 	made add questionnaire support for server side 

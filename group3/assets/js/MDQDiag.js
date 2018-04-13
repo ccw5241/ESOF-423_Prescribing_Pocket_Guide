@@ -48,7 +48,7 @@ function printDiag(total) {
   }
 }
 
-
+//create unit test for the diagnose
 var unitTests = {};
 
 unitTests.diagnose = function(method){
@@ -65,6 +65,8 @@ unitTests.diagnose = function(method){
 
 console.log(unitTests.diagnose(diagnose));
 
+
+//create the unit test for printDiag make sure it can be worked
 unitTests.printDiag = function(method){
   var total2 =5;
   var result2= document.write("<br> The screen is positive for possible Bipolar I Disorder. Complete a clinical interview to make a diagnosis. This screen is not as sensitive for Bipolar II Disorder (Depression and hypomania). <br>");

@@ -78,3 +78,19 @@ Patient.prototype.listConstructor = function (list) {
 	this.attr["updated"] = list["updated"];
 	return this;
 };
+
+//create unit test for the impleConstructor
+var unitTests = {};
+
+unitTests.simpleConstructor = function(method){
+  var id = 1234;
+	var result = id.simpleConstructor();
+	}
+	if(method(id) === result){
+		return true;
+	}else{
+		return false;
+	}
+};
+
+console.log(unitTests.simpleConstructor(simpleConstructor));

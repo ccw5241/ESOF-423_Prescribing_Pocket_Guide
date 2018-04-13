@@ -1,6 +1,6 @@
 function onloadQuestionnaire(){
 	//genPHQ9();
-	
+
 }
 
 function copyQu_ID(clickedElem){
@@ -22,7 +22,7 @@ function copyQu_ID(clickedElem){
 function numAnswersChanged(elem) {
 	//console.log(elem.value);
 	var div = elem.parentElement;
-	
+
 	if(!isNaN(elem.value) && !elem.value.includes(".")){//is it integer?
 		var currentItems = div.getElementsByClassName("optionTitle");
 		var size = currentItems.length;
@@ -81,14 +81,14 @@ function developQuestionnaire(form){
 				q.QSection[QS_ID]["title"] = QSections[i].getElementsByClassName("title")[0].value;
 				q.QSection[QS_ID]["prompt"] = QSections[i].getElementsByClassName("prompt")[0].value;
 				q.QSection[QS_ID]["numOptions"] = QSections[i].getElementsByClassName("numOptions")[0].value;
-				
+
 				//optionsTitle creation
 				var allOptions = QSections[i].getElementsByClassName("optionTitle");
 				q.QSection[QS_ID]["options"] = {};
 				for(var j = 0; j < allOptions.length; j++){
 					q.QSection[QS_ID]["options"][j] = allOptions[j].value;
 				}
-				
+
 				//Questions Creation
 				q.QSection[QS_ID]["questions"] = {};
 				var questions = QSections[i].getElementsByClassName("Question");
@@ -111,7 +111,7 @@ function developQuestionnaire(form){
 	q.Diagnosis[wrapperD_ID]["D_ID"] = wrapperD_ID;
 	q.Diagnosis[wrapperD_ID]["title"] = "Overall Diagnosis";
 	q.Diagnosis[wrapperD_ID]["logic"] = 'AND_ALL';
-	
+
 	var DSections = form.getElementsByClassName("DSection");
 	for(var i = 0; i < DSections.length; i++){
 		for(var D_ID in q.attr["DLinks"]){
@@ -127,7 +127,7 @@ function developQuestionnaire(form){
 			}
 		}
 	}
-	
+
 	console.log(q);
 	q.addToDB();
 }
@@ -233,3 +233,18 @@ function createQuestion(button){
 	q.attr["QuLinks"][Qu_ID] = newField;
 }
 
+//creat unit test for createQSection method
+var unitTests = {};
+
+unitTests.createQuestion = function(method){
+	var QS_ID1 = "1234"
+	var result = QS_ID1.uniqueID();
+	}
+	if(method(QS_ID1) === result){
+		return true;
+	}else{
+		return false;
+	}
+};
+
+console.log(unitTests.createQuestion(createQuestion));

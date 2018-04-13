@@ -47,3 +47,33 @@ function printDiag(total) {
     document.write("<br> Not enough evidence for a positive screen of Bipolar I disorder. This screen is not as sensitive for Bipolar II Disorder (Depression and hypomania). <br>");
   }
 }
+
+
+var unitTests = {};
+
+unitTests.diagnose = function(method){
+  var Q1 = 8;
+  var total1 =1;
+  var result1 = total1++;
+	}
+	if(method(Q1) === result1){
+		return true;
+	}else{
+		return false;
+	}
+};
+
+console.log(unitTests.diagnose(diagnose));
+
+unitTests.printDiag = function(method){
+  var total2 =5;
+  var result2= document.write("<br> The screen is positive for possible Bipolar I Disorder. Complete a clinical interview to make a diagnosis. This screen is not as sensitive for Bipolar II Disorder (Depression and hypomania). <br>");
+	}
+	if(method(total2) === result2){
+		return true;
+	}else{
+		return false;
+	}
+};
+
+console.log(unitTests.printDiag(printDiag));

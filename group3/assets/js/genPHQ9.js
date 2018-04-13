@@ -92,7 +92,7 @@ function genPHQ9(){
 					'D_ID': 'D_3',
 					//$answers["Qu_ID"]["ans"]
 					//true == 1, false == 0
-					'logic': '($answers["Qu_1"]["ans"] > 1 + $answers["Qu_2"]["ans"] > 1' + // Part 1: Sum times Qu #1-8 were 2 or more 
+					'logic': '($answers["Qu_1"]["ans"] > 1 + $answers["Qu_2"]["ans"] > 1' + // Part 1: Sum times Qu #1-8 were 2 or more
 								' + $answers["Qu_3"]["ans"] > 1 + $answers["Qu_4"]["ans"] > 1' +
 								' + $answers["Qu_5"]["ans"] > 1 + $answers["Qu_6"]["ans"] > 1' +
 								' + $answers["Qu_7"]["ans"] > 1 + $answers["Qu_8"]["ans"] > 1)' +

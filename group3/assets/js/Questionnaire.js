@@ -99,8 +99,22 @@ class Questionnaire {
 			url: "includes/DB_Interface/evalDiagnosis.php",
 			data: d,
 			success: function(result){
+				console.log(result);
 				var dict = JSON.parse(result);
 				callback(dict);
+			}
+		});
+	}
+	
+	deleteFromDB(){
+		var d = {}; 
+		d["Q_ID"] = this.attr["Q_ID"];
+		$.ajax({
+			type: "POST",
+			url: "includes/DB_Interface/removeQuestionnaire.php",
+			data: d,
+			success: function(result){
+				console.log("delete: " + result);
 			}
 		});
 	}

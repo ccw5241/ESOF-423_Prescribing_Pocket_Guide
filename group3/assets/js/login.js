@@ -48,7 +48,7 @@ function signup(){
 	var name = document.forms["name"]["username"].value;
 	var pass = document.forms["passSignup"]["password"].value;
 	var pass2 = document.forms["repassSignup"]["repassword"].value;
-
+	
 	if(pass != pass2){
 		alert("Passwords did not match");
 		return;
@@ -76,15 +76,3 @@ function signup(){
 }
 
 
-var unitTests = {};
-
-unitTests.success = function(method){
-	var num =1;
-	if(method(num.success(1)) === "This username already exists"){
-		return true;
-	}else{
-		return false;
-	}
-};
-
-console.log(unitTests.success(success));

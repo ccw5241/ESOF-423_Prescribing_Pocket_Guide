@@ -68,7 +68,7 @@ function diagnose() {
   if (score > 2) {
     result+="Tentative diagnosis of depression\n";
   }
-
+  
   //Write Result to paragraph section
   document.getElementById("display").textContent=result;
 }
@@ -112,21 +112,3 @@ function calcSeverity() {
   }
   return result;
 }
-
-
-
-//create a unit test for calcSeverity method
-var unitTests = {};
-
-unitTests.calcSeverity = function(method){
-  let total = 6;
-	var result = total.toString("\nMinimal symptoms. Support, ask to call if condition worsens, and return in 1 month. \n";);
-	}
-	if(method(total) === result){
-		return true;
-	}else{
-		return false;
-	}
-};
-
-console.log(unitTests.calcSeverity(calcSeverity));

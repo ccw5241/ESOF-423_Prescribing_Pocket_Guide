@@ -20,7 +20,7 @@ include("includes/DB_Interface/dbLogin.php");
 		<h1>Create Questionnaire</h1>
 		<form id="Questionnaire" action = "" onsubmit="submitTester(this); return false;" method = "post">
 			Questionnaire Name:<br>
-			<input type="text" name="Qname">
+			<input type="text" name="Qname" class = "QuestionnaireName">
 			<fieldset id ="QFields">
 			<legend > Question Fields: </legend>
 				<input type="button" class="button" value="Add Question Section" onclick="createQSection(this);"><br>

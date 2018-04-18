@@ -28,14 +28,21 @@ include("includes/dbLogin.php");
 			<input type="text" id="x" name="x" placeholder="X"><br>
 		</form>
 		<div class="dropdown">
-			<button onclick="toggleDropdown()" class="dropbtn">Past Forms</button>
+			<button onclick="toggleDropdown(this);" class="dropbtn">Past Forms</button>
 			<div id="myDropdown" class="dropdown-content">
 				<!--<a href="#" onclick = "t()">Link 1</a>-->
 			</div>
 		</div>
 		<ul>
-			<li><input type="button" id="modalSubmit" class="button" value="Submit" onClick="addNew();"></li>
-			<li><input type="button" id="modalPHQ9" class="button" value="New PHQ9 Form" onClick="doNewPHQ9();"></li>
+			<li><input type="button" id="modalSubmit" class="button" value="Submit" onClick="addNew(this);"></li>
+			<!--<li><input type="button" id="modalPHQ9" class="button" value="New PHQ9 Form" onClick="doNewPHQ9();"></li>
+			-->
+			<div class="dropdown">
+				<button onclick="toggleDropdown(this);" class="dropbtn">New Questionnaire</button>
+				<div id="questionnaireDropdown" class="dropdown-content">
+					<!--<a href="#" onclick = "t()">Link 1</a>-->
+				</div>
+			</div>
 		</ul>
 	  </div>
 	</div>

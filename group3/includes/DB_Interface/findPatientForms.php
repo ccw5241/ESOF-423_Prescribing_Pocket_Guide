@@ -21,12 +21,12 @@
 			$i = $i+1;
 		}
 		$F_ID = $row["F_ID"];
+		$row["answers"] = [];
 		$findAns = mysqli_query($dbconnect, 
 			"SELECT A.*, Qu.qu_num FROM Answer A
 			Join Question Qu on Qu.Qu_ID = A.Question_Qu_ID
 			where A.Form_F_ID = '$F_ID';")
 			or die (mysqli_error($dbconnect));
-		//$i=0;
 		//for each answer in this form
 		while($ans = mysqli_fetch_array($findAns)) {
 			// clean up list duplicates (delete all numerical keys)
@@ -36,8 +36,7 @@
 				$j = $j+1;
 			}
 			//add cleaned answers to form according to which question 'num' it is
-			$row[(string)$ans["qu_num"]-1] = $ans;
-			//$i= $i + 1;
+			$row["answers"][(string)$ans["qu_num"]] = $ans["ans"];
 		}
 		//add form to list of all forms for this patient
 		$results[$F_ID] = $row;

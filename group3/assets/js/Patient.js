@@ -14,6 +14,18 @@ class Patient {
 			}
 		});
 	}
+	
+	updateDB(){
+		$.ajax({
+			type: "POST",
+			url: "includes/DB_Interface/updatePatient.php",
+			data: this.attr,
+			success: function(result){
+				alert(result);
+			}
+		});
+	}
+	
 	//delete this patient from the DB
 	deleteFromDB(){
 		//delete from DB
@@ -36,7 +48,9 @@ class Patient {
 			data: d,
 			success: function(result){
 				var dict = JSON.parse(result);
+				console.log(dict);
 				for(var f in dict){ //for each form make a form obj
+					
 					pat.forms[f] = new Form().listConstructor(dict[f]);
 					console.log(pat.forms[f]);
 				}
@@ -58,7 +72,9 @@ class Patient {
 			type: "POST",
 			url: "includes/DB_Interface/addForm.php",
 			data: d,
-			success: callback
+			success: function(result){
+				callback(result);
+			}
 		});
 	}
 }
@@ -78,19 +94,3 @@ Patient.prototype.listConstructor = function (list) {
 	this.attr["updated"] = list["updated"];
 	return this;
 };
-
-//create unit test for the impleConstructor
-var unitTests = {};
-
-unitTests.simpleConstructor = function(method){
-  var id = 1234;
-	var result = id.simpleConstructor();
-	}
-	if(method(id) === result){
-		return true;
-	}else{
-		return false;
-	}
-};
-
-console.log(unitTests.simpleConstructor(simpleConstructor));

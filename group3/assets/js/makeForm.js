@@ -22,7 +22,7 @@ function addQuestions(quest){
 		titleStr = q.attr["name"];
 	}
 	title.innerHTML = titleStr + " Questionnaire";
-
+	
 	var allQSections = q.getAllQSections();
 	//Format: allQuestions['Qu_ID'] = {'Qu_ID': ___, 'qu_text': ____, 'qu_num': ____, 'QSection_QS_ID': QS_xxxx}
 	var allQuestions = q.getAllQuestions();
@@ -35,14 +35,20 @@ function addQuestions(quest){
 	}
 	//count numQ
 	var numQ = 0;
+	var minQnum = 2;
 	for (var i in allQuByNum) {
+		if(minQnum > parseInt(i)){
+			minQnum = parseInt(i); //generally becomes 0
+		}
 	   if (allQuByNum.hasOwnProperty(i)) numQ++;
 	}
+	console.log(minQnum);
+	console.log(allQuByNum);
 	//create each question item
 	var curQS_ID = "";
 	var curQSectionItem;
 	var width = 0;
-	for (var i = 1; i <= numQ; i++) {
+	for (var i = minQnum; i < numQ + minQnum; i++) {
 		//new QSection?
 		if(curQS_ID.localeCompare(allQuByNum[i.toString()]["QSection_QS_ID"]) != 0){
 			//add new line on old QSection
@@ -61,7 +67,7 @@ function addQuestions(quest){
 		curQSectionItem.appendChild(document.createElement('br'));
 	}
 	curQSectionItem.appendChild(document.createElement('br'));
-
+	
 	F_ID = getCookieDataByKey('F_ID');
 	P_ID = getCookieDataByKey('P_ID');
 	Q_ID = getCookieDataByKey('Q_ID');
@@ -126,15 +132,21 @@ function makeQuItem(qu_text, name, options, width){
 	return newField;
 }
 
-//not implemented
+//callback after patient is loaded with all forms
 function addStartValues(patient){
 	var F_ID = getCookieDataByKey('F_ID');
-	let form = document.getElementById("Questionnaire");
+	var formField = document.getElementById("Questionnaire");
+	var questions = formField.getElementsByClassName("qu");
+	for(var i = 0; i < questions.length; i++){
+		var relatedRadios = questions[i].getElementsByTagName('input');
+		for(var j = 0; j < relatedRadios.length; j++){
+			if(parseInt(relatedRadios[j].value) == parseInt(patient.forms[F_ID].attr["answers"][i])){
+				relatedRadios[j].checked = true;
+			}
+		}
+	}
 	//populate with previous form answers
 	console.log(F_ID);
-	for (let i = 0; i < form.length; i++) {
-		form.elements[i].value = patient.forms[F_ID].attr["allAnswers"][i.toString()]["ans"];
-	}
 }
 
 function initializeDiagnosis(form){
@@ -143,13 +155,17 @@ function initializeDiagnosis(form){
 	//Format: allQuestions['Qu_ID'] = {'Qu_ID': ___, 'qu_text': ____, 'qu_num': ____, 'QSection_QS_ID': QS_xxxx}
 	var allQuestions = q.getAllQuestions();
 	//sort by question number
+	var quNumOffset = 2;
 	var allQuByNum = {};
 	for (var key in allQuestions){
+		if(quNumOffset > parseInt(allQuestions[key]['qu_num'])){
+			quNumOffset = parseInt(allQuestions[key]['qu_num'])
+		}
 		allQuByNum[allQuestions[key]['qu_num']] = {"qu_text": allQuestions[key]['qu_text'],
 													'Qu_ID': allQuestions[key]['Qu_ID'],
 													'QSection_QS_ID': allQuestions[key]['QSection_QS_ID']};
 	}
-
+	
 	//make answers array and Dict
 	var inputs = form.getElementsByClassName("qu");
 	var formAnswers = new Array();
@@ -163,22 +179,23 @@ function initializeDiagnosis(form){
 				//    qu_num-1 = answer
 				formAnswers[i] = j;
 				//								Qu_xxxx  = answer
-				answers[allQuByNum[i+1]["Qu_ID"]] = {};
-				answers[allQuByNum[i+1]["Qu_ID"]]["ans"] = j;
+				answers[allQuByNum[i+quNumOffset]["Qu_ID"]] = {};
+				answers[allQuByNum[i+quNumOffset]["Qu_ID"]]["ans"] = j;
 			}
 		}
 	}
 	console.log(formAnswers);
 	console.log(answers);
-
+	
 	//make dummy patient to add form to DB
 	F_ID = getCookieDataByKey('F_ID');
 	P_ID = getCookieDataByKey('P_ID');
 	if(P_ID != "" && F_ID == ""){
 		var pat = new Patient().simpleConstructor(P_ID);
 		pat.addAnsToDB(formAnswers, q.attr["Q_ID"], dbSubmitResponse);
+		document.cookie="F_ID=submitted";
 	}
-
+	
 	//printout Diagnosis:
 	q.evaluateDiagnosis(answers, printoutDiag);
 }
@@ -203,6 +220,7 @@ function submitTester(form){
 	}
 }
 
+//callback after evaluation is created
 function printoutDiag(evalReturn){
 	var display = document.getElementById("display");
 	console.log(evalReturn);
@@ -213,7 +231,10 @@ function printoutDiag(evalReturn){
 		div.appendChild(document.createTextNode(thisDiag["title"]));
 		div.appendChild(document.createElement('br'));
 		var message = "";
-		if(evalReturn[D_ID]){
+		if(typeof(evalReturn[D_ID]) !== "boolean"){
+			message = evalReturn[D_ID];
+		}
+		else if(evalReturn[D_ID]){
 			message = thisDiag["posMessage"];
 			if(message == ""){
 				message = "True";
@@ -224,30 +245,18 @@ function printoutDiag(evalReturn){
 				message = "False";
 			}
 		}
-		div.appendChild(document.createTextNode(message));
-		div.appendChild(document.createElement('br'));
-		div.appendChild(document.createTextNode(thisDiag["footnote"]));
-		div.appendChild(document.createElement('br'));
+		var innerDiv = document.createElement("div");
+		innerDiv.innerHTML += message;
+		innerDiv.appendChild(document.createElement('br'));
+		innerDiv.innerHTML += thisDiag["footnote"];
+		innerDiv.appendChild(document.createElement('br'));
+		innerDiv.appendChild(document.createElement('br'));
+		innerDiv.style.marginLeft = "20px";
+		div.appendChild(innerDiv);
 		display.appendChild(div);
 	}
 }
 
-function dbSubmitResponse(){
-	alert("Successfully added form");
+function dbSubmitResponse(response){
+	console.log(response);
 }
-
-
-var unitTests = {};
-
-unitTests.addStartValues = function(method){
-	var st =1;
-	var result = st.getCookieDataByKey("1");
-}
-	if(method(st === result){
-		return true;
-	}else{
-		return false;
-	}
-};
-
-console.log(unitTests.addStartValues(addStartValues));

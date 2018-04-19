@@ -5,6 +5,17 @@ Useful links for the coding standards the client wants (I think)
 http://fhir.cerner.com/millennium/dstu2/
 https://docs.healtheintent.com/#introduction
 
+v2.0 - 
+	Questionnaire deletion added
+	Form choice selection list of any Questionnaire available
+	PHQ9 diagnosis reordered to add treatment and monitoring
+	Diagnosis section reordered to be more readable
+	updateable Patients!!
+	Fixed some major bugs:
+		PHQ9 addition logic fixed
+		all forms changed to start at question index 0
+		all forms changed to number off questions as per the entire questionnaire, not as per the individual QSections
+
 v1.6 - 
 	full questionnaire creation available
 	form creation fully modular

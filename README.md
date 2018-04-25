@@ -5,6 +5,12 @@ Useful links for the coding standards the client wants (I think)
 http://fhir.cerner.com/millennium/dstu2/
 https://docs.healtheintent.com/#introduction
 
+v2.1 - 
+	Questionnaire updating and duplication added
+	Fixed new user adding patients bug
+	Changed logic text input to a textarea (for more room)
+	added various cosmetic changes as per user testing feedback
+
 v2.0 - 
 	Questionnaire deletion added
 	Form choice selection list of any Questionnaire available

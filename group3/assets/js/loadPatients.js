@@ -43,20 +43,20 @@ function addNew(button){
 		alert("Please fill out all information fields");
 	}
 }
-//loads a single patient in the list  
+//loads a single patient in the list
 function loadOne(patientObj){
 	var inName = patientObj.attr["fname"] + " " + patientObj.attr["lname"];
 	//var inX = patientObj.attr["P_ID"];
 	var inX = "Extra Info";
 	var inDate = patientObj.attr["updated"];
-	
+
 	var wholeList = document.getElementById("allPatients");
 	var patient = document.createElement("li");
 	var name = document.createElement("li");
 	var x = document.createElement("li");
 	var date = document.createElement("li");
 	var pList = document.createElement("ul");
-	
+
 	var imgDel = delImgCreate();
 	var imgEdit = editImgCreate();
 	var liDel = document.createElement("li");
@@ -65,7 +65,7 @@ function loadOne(patientObj){
 	liEdit.id = "highlightEach";
 	liDel.appendChild(imgDel);
 	liEdit.appendChild(imgEdit);
-	
+
 	name.appendChild(document.createTextNode(inName));
 	x.appendChild(document.createTextNode(inX));
 	date.appendChild(document.createTextNode(inDate));
@@ -74,7 +74,7 @@ function loadOne(patientObj){
 	pList.appendChild(name);
 	pList.appendChild(x);
 	pList.appendChild(date);
-	
+
 	patient.appendChild(pList);
 	patient.id= "person";
 	wholeList.appendChild(patient);
@@ -104,7 +104,7 @@ function deletePatient(delItem, e){
 	//delete li patient Item
 	var delListItem = delItem.parentElement.parentElement.parentElement;
 	delListItem.parentNode.removeChild(delListItem);
-	
+
 	//find patient selected
 	var delID;
 	for (var patID in allPatients){
@@ -115,7 +115,7 @@ function deletePatient(delItem, e){
 	var newPat = new Patient().simpleConstructor(delID);
 	newPat.deleteFromDB();
 	delete allPatients[delID];
-	
+
 	sideNavHeight();
     return false;
 }
@@ -128,7 +128,7 @@ function editPatient(editItem, e){
 			editID = patID;
 		}
 	}
-	
+
 	//alter modal
 	var modal = document.getElementById('myModal');
 	document.cookie="P_ID="+editID;
@@ -146,7 +146,7 @@ function editPatient(editItem, e){
 	//alter Form review dropdown
 	var allForms = document.getElementsByClassName("dropdown")[0];
 	allForms.style.display = "block";
-	
+
 	var qDropdown = document.getElementsByClassName("dropdown")[1];
 	qDropdown.style.display = "";
 	//change text of submit button
@@ -155,7 +155,7 @@ function editPatient(editItem, e){
 	//Show new PHQ9 button
 	//var qDropdown = document.getElementById("questionnaireDropdown");
 	//qDropdown.style.display = "block";
-	
+
 	//load answers from database, then callback addPastForms when it finishes
 	allPatients[editID].loadAnsFromDB(addPastFormsHelper);
 }
@@ -171,7 +171,7 @@ function addAllQ(qList){
 	while(dropdown.hasChildNodes()){
 		dropdown.removeChild(dropdown.firstChild);
 	}
-	
+
 	for(var key in qList){
 		var listItem = document.createElement("a");
 		//here record a was to traceback Q_ID selected
@@ -205,7 +205,7 @@ function addDropDownsEditQ(qList){
 	while(dropdown.hasChildNodes()){
 		dropdown.removeChild(dropdown.firstChild);
 	}
-	
+
 	for(var key in qList){
 		var listItem = document.createElement("a");
 		//here record a was to traceback Q_ID selected
@@ -222,7 +222,7 @@ function addDropDownsDelQ(qList){
 	while(dropdown.hasChildNodes()){
 		dropdown.removeChild(dropdown.firstChild);
 	}
-	
+
 	for(var key in qList){
 		var listItem = document.createElement("a");
 		//here record a was to traceback Q_ID selected
@@ -240,14 +240,14 @@ function addPastForms(patient, qList){
 	while(allForms.hasChildNodes()){
 		allForms.removeChild(allForms.firstChild);
 	}
-	
+
 	for(var key in patient.forms){
 		var listItem = document.createElement("a");
 		patient.forms[key].attr["listItem"] = listItem;
 		listItem.appendChild(document.createTextNode(qList[patient.forms[key].attr['Questionnaire_Q_ID']]["name"] + " form made " + patient.forms[key].attr["time"]));
 		listItem.setAttribute("onclick", "reviewForm(this,event);");
 		allForms.appendChild(listItem);
-	}	
+	}
 }
 function reviewForm(formListItem, e){
 	//search all forms of all patients for selected one

@@ -31,7 +31,7 @@ function loadToPage(){
 	}
 	qName.value = name;
 	q.attr["name"] = name;
-	
+
 	//create QSections on this questionnaire
 	var QSFields = document.getElementById("QFields");
 	var i = 0;
@@ -55,7 +55,7 @@ function loadToPage(){
 		//make all optionTitles
 		var optionsElem = curQField.getElementsByClassName("numOptions")[0];
 		numAnswersChanged(optionsElem);
-		k = 0; 
+		k = 0;
 		allOptTitle = curQField.getElementsByClassName("optionTitle");
 		for(var optItem in q.QSection[QSItem]["options"]){
 			allOptTitle[k].value = q.QSection[QSItem]["options"][optItem];
@@ -63,7 +63,7 @@ function loadToPage(){
 		}
 		i++;
 	}
-	
+
 	//make qu_num => newQu_IDs array
 	var allQuestionElems = form.getElementsByClassName("Question");
 	//sort by question number
@@ -85,7 +85,7 @@ function loadToPage(){
 	for(var oldQu_ID in allOldQuestions){
 		oldIdToNewId[oldQu_ID] = allQuByNum[allOldQuestions[oldQu_ID]["qu_num"]];
 	}
-	
+
 	//createDiagnosis for this questionnaire
 	var DFields = document.getElementById("DFields");
 	i = 0;
@@ -132,7 +132,7 @@ function copyQu_ID(clickedElem){
 function numAnswersChanged(elem) {
 	//console.log(elem.value);
 	var div = elem.parentElement;
-	
+
 	if(!isNaN(elem.value) && !elem.value.includes(".")){//is it integer?
 		var currentItems = div.getElementsByClassName("optionTitle");
 		var size = currentItems.length;
@@ -168,7 +168,7 @@ function submitTester(form){
 	for (i = 0; i < numInputs.length; i++) {
 		onlyNums = onlyNums && (!isNaN(numInputs[i].value) && !numInputs[i].value.includes("."));
 	}
-	
+
 	if(!onlyNums){
 		alert("'Number of Possible Answers' needs integer values");
 	}else if(!filled){
@@ -196,14 +196,14 @@ function developQuestionnaire(form){
 				q.QSection[QS_ID]["title"] = QSections[i].getElementsByClassName("title")[0].value;
 				q.QSection[QS_ID]["prompt"] = QSections[i].getElementsByClassName("prompt")[0].value;
 				q.QSection[QS_ID]["numOptions"] = QSections[i].getElementsByClassName("numOptions")[0].value;
-				
+
 				//optionsTitle creation
 				var allOptions = QSections[i].getElementsByClassName("optionTitle");
 				q.QSection[QS_ID]["options"] = {};
 				for(var j = 0; j < allOptions.length; j++){
 					q.QSection[QS_ID]["options"][j] = allOptions[j].value;
 				}
-				
+
 				//Questions Creation
 				q.QSection[QS_ID]["questions"] = {};
 				var questions = QSections[i].getElementsByClassName("Question");
@@ -227,7 +227,7 @@ function developQuestionnaire(form){
 	q.Diagnosis[wrapperD_ID]["D_ID"] = wrapperD_ID;
 	q.Diagnosis[wrapperD_ID]["title"] = "Overall Diagnosis";
 	q.Diagnosis[wrapperD_ID]["logic"] = 'AND_ALL';
-	
+
 	var DSections = form.getElementsByClassName("DSection");
 	for(var i = 0; i < DSections.length; i++){
 		for(var D_ID in q.attr["DLinks"]){
@@ -243,7 +243,7 @@ function developQuestionnaire(form){
 			}
 		}
 	}
-	
+
 	console.log(q);
 	q.addToDB();
 }
@@ -355,3 +355,18 @@ function createQuestion(button){
 	q.attr["QuLinks"][Qu_ID] = newField;
 }
 
+
+//unit test for onloadQuestionnaire
+var unitTests = {};
+
+unitTests.onloadQuestionnaire = function(method){
+	var str = ""
+	var result = new Questionnaire().simpleConstructor(uniqueID("Q_"));
+	if(method(str) == result){
+		return true;
+	}else{
+		return false;
+	}
+};
+
+console.log(unitTests.onloadQuestionnaire(onloadQuestionnaire));

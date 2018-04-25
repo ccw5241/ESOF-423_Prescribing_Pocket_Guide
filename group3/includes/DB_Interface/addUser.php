@@ -13,7 +13,7 @@
 	}
 	
 	if($freeName){
-		$sql = "INSERT INTO User(U_ID, username, password) VALUES ('$ID', '$username', '$pass');";
+		$sql = "INSERT INTO User(U_ID, username, password) VALUES ('$ID', '$username', '$password');";
 		if(mysqli_query($dbconnect, $sql)){
 			echo 0;
 		} else{

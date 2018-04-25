@@ -223,7 +223,11 @@ function submitTester(form){
 //callback after evaluation is created
 function printoutDiag(evalReturn){
 	var display = document.getElementById("display");
-	console.log(evalReturn);
+	//clear anything already here
+	while (display.firstChild) {
+		display.removeChild(display.firstChild);
+	}
+	//console.log(evalReturn);
 	for(var D_ID in evalReturn){
 		var thisDiag = q.Diagnosis[D_ID];
 		//Display all Diagnosis info
@@ -246,12 +250,15 @@ function printoutDiag(evalReturn){
 			}
 		}
 		var innerDiv = document.createElement("div");
-		innerDiv.innerHTML += message;
+		innerDiv.style.marginLeft = "20px";
+		//innerDiv.style.width = "400px";
+		innerDiv.style["white-space"] = "normal";
+		innerDiv.innerHTML += message ;
 		innerDiv.appendChild(document.createElement('br'));
 		innerDiv.innerHTML += thisDiag["footnote"];
 		innerDiv.appendChild(document.createElement('br'));
 		innerDiv.appendChild(document.createElement('br'));
-		innerDiv.style.marginLeft = "20px";
+		
 		div.appendChild(innerDiv);
 		display.appendChild(div);
 	}

@@ -8,6 +8,7 @@ a:hover{
 }
 .mainContent {
     -webkit-animation: fadein 2s;
+	white-space: normal;
 }
 @-webkit-keyframes fadein {
     from { opacity: 0; }
@@ -135,6 +136,22 @@ input{
 	width: 300px;
 	border: none;
 	outline: none;
+}
+textarea{
+	margin: auto;
+	background-color: #001d3f;
+	color: white;
+	font-size: 20px;
+	width: 300px;
+	border: none;
+	border-radius: 10px;
+	outline: none;
+	resize: none;
+	font-family: Arial;
+}
+::placeholder{
+	opacity: 0.8;
+	color: white;
 }
 .InlineLogin{
 	display: inline-block;

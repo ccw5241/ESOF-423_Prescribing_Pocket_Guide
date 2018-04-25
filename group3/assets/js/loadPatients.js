@@ -1,5 +1,11 @@
 var qDropdownLookup = {};
+var qEditDropdownLookup = {};
+var q_idToName = {};
 
+
+function onloadPatient(){
+	questionnaireList();
+}
 //gets info from form and determines if it has been filled out
 function addNew(button){
 	var buttonType = button.value;
@@ -151,12 +157,15 @@ function editPatient(editItem, e){
 	//qDropdown.style.display = "block";
 	
 	//load answers from database, then callback addPastForms when it finishes
-	allPatients[editID].loadAnsFromDB(questionnaireList);
+	allPatients[editID].loadAnsFromDB(addPastFormsHelper);
+}
+
+function addPastFormsHelper(patient){
+	addPastForms(patient, q_idToName);
 }
 
 //adds list of questionnaire types allowed to make forms out of
 function addAllQ(qList){
-	console.log(qList);
 	var dropdown = document.getElementById("questionnaireDropdown");
 	//delete anything in there
 	while(dropdown.hasChildNodes()){
@@ -174,17 +183,54 @@ function addAllQ(qList){
 }
 
 //start of callback from loading form ans from DB (calls addPastForms and addAllQ)
-function questionnaireList(patient){
+function questionnaireList(){
 	$.ajax({
 		type: "POST",
 		url: "includes/DB_Interface/listQuestionnaires.php",
 		data: {},
 		success: function(result){
 			//console.log(result);
-			addAllQ(JSON.parse(result));
-			addPastForms(patient, JSON.parse(result));
+			q_idToName = JSON.parse(result);
+			addDropDownsEditQ(q_idToName);
+			addAllQ(q_idToName);
+			addDropDownsDelQ(q_idToName);
+			//move: addPastForms(patient, JSON.parse(result));
 		}
 	});
+}
+
+function addDropDownsEditQ(qList){
+	var dropdown = document.getElementById("questionnaireEditDropdown");
+	//delete anything in there
+	while(dropdown.hasChildNodes()){
+		dropdown.removeChild(dropdown.firstChild);
+	}
+	
+	for(var key in qList){
+		var listItem = document.createElement("a");
+		//here record a was to traceback Q_ID selected
+		qEditDropdownLookup[key] = listItem;
+		listItem.appendChild(document.createTextNode(qList[key]["name"]));
+		listItem.setAttribute("onclick", "editQuestionnaire(this, '" + key + "');");
+		dropdown.appendChild(listItem);
+	}
+}
+
+function addDropDownsDelQ(qList){
+	var dropdown = document.getElementById("questionnaireDelDropdown");
+	//delete anything in there
+	while(dropdown.hasChildNodes()){
+		dropdown.removeChild(dropdown.firstChild);
+	}
+	
+	for(var key in qList){
+		var listItem = document.createElement("a");
+		//here record a was to traceback Q_ID selected
+		qEditDropdownLookup[key] = listItem;
+		listItem.appendChild(document.createTextNode(qList[key]["name"]));
+		listItem.setAttribute("onclick", "delQuestionnaire(this, '" + key + "');");
+		dropdown.appendChild(listItem);
+	}
 }
 
 //callback from patient class to populate past forms dropdown
@@ -201,10 +247,7 @@ function addPastForms(patient, qList){
 		listItem.appendChild(document.createTextNode(qList[patient.forms[key].attr['Questionnaire_Q_ID']]["name"] + " form made " + patient.forms[key].attr["time"]));
 		listItem.setAttribute("onclick", "reviewForm(this,event);");
 		allForms.appendChild(listItem);
-	}
-	
-	
-		
+	}	
 }
 function reviewForm(formListItem, e){
 	//search all forms of all patients for selected one
@@ -231,12 +274,33 @@ function newQ(selectedQ, event){
 		}
 	}
 }
-
+//Makes a new FORM
 function doNewQ(Q_ID){
 	document.cookie="F_ID=";
 	document.cookie="Q_ID="+Q_ID
 	document.location.href = "makeForm.php";
 	window.location.href = "makeForm.php";
+}
+
+function newQuestionnaire(){
+	document.cookie="Q_ID=";
+	document.location.href = "makeQuestionnaire.php";
+	window.location.href = "makeQuestionnaire.php";
+}
+
+function editQuestionnaire(selectedItem, Q_ID){
+	document.cookie="Q_ID="+Q_ID;
+	document.location.href = "makeQuestionnaire.php";
+	window.location.href = "makeQuestionnaire.php";
+}
+
+function delQuestionnaire(selectedItem, Q_ID){
+	if(confirm("Deleting this Questionnaire will delete all associated Forms. Continue?")){
+		var delQ = new Questionnaire().simpleConstructor(Q_ID);
+		delQ.deleteFromDB();
+		selectedItem.parentElement.removeChild(selectedItem);
+		questionnaireList();
+	}
 }
 
 function sideNavHeight(){
@@ -246,7 +310,7 @@ function sideNavHeight(){
 	var patTop = pat.getBoundingClientRect().top;
 	var navTop = nav.getBoundingClientRect().top;
 	var windowH = window.innerHeight;
-	if(patTop>0){
+	if(patTop > 0){
 		nav.style.height = patH.toString()+"px";
 	}else{
 		var newH = patH+patTop;

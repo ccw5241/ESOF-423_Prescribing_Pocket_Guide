@@ -7,6 +7,7 @@ function genPHQ9(){
 			'QS_1' : {
 				'prompt': 'Over the past 2 weeks, how often have you been bothered by any of the following problems?',
 				'QS_ID' : 'QS_1',
+				'numOptions' : '4',
 				'questions' : {
 					'Qu_1' : {
 						'Qu_ID' : 'Qu_1',
@@ -63,6 +64,7 @@ function genPHQ9(){
 			},
 			'QS_2' : {
 				'QS_ID' : 'QS_2',
+				'numOptions' : '4',
 				'questions' : {
 					'Qu_10' : {
 						'Qu_ID' : 'Qu_10',

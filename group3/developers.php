@@ -31,7 +31,7 @@ $navlink = "frontPage";
 		<h2>Overview</h2>
 		<p>
 			The repository for this project can be found at: 
-			<a href = "https://github.com/ccw5241/ESOF-423_Prescribing_Pocket_Guide">ESOF-423 Prescribing Pocket Guide</a> 
+			<a href = "https://github.com/ccw5241/ESOF-423_Prescribing_Pocket_Guide" style="color: blue;">ESOF-423 Prescribing Pocket Guide</a> 
 			where the latest source code can be downloaded.
 		</p><p>
 			The separate web pages are all contained in the root directory and are php files to 
@@ -47,13 +47,15 @@ $navlink = "frontPage";
 			the database using console commands via the server using .sql scripts, or through a 
 			combination of using ajax in java scripts and mysqli commands in php.
 		</p><p>
-			To identify the version number, current features, and track bugs locate the readme 
+			To identify the version history, current features, and track bugs locate the readme 
 			file within the github repository.
 		</p>
 		<h2>Database EER Diagram</h2>
 		<img src="assets/images/EER.png?t=<?=time()?>" width="800">
 		<h2>Site Navigation Flowchart</h2>
 		<img src="assets/images/SiteNavFlowchart.png?t=<?=time()?>" width="800">
+		<h2>Java Script UML Diagram</h2>
+		<img src="assets/images/jsUML.png?t=<?=time()?>" width="800">
 	</div>
 </body>
 <?php include("includes/footer.php"); ?>

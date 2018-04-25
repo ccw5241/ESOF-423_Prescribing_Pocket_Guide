@@ -9,7 +9,7 @@
 		//echo "".json_encode($row);
 		if($row["password"] == $pass){
 			session_start();
-			$_SESSION['userID'] = $user;
+			$_SESSION['userID'] = $row["U_ID"];//$user;
 			echo 0;
 		}
 	}else{

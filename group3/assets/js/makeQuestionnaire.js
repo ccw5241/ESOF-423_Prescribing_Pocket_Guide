@@ -1,6 +1,116 @@
+//globals
+var Q_ID;
+var q;
 function onloadQuestionnaire(){
-	genPHQ9();
+	//genPHQ9();
+	Q_ID = getCookieDataByKey('Q_ID');
+	if(Q_ID != ""){
+		q = new Questionnaire().simpleConstructor(Q_ID);
+		q.loadFromDB(loadToPage);
+	}else{
+		q = new Questionnaire().simpleConstructor(uniqueID("Q_"));
+	}
+}
+
+function loadToPage(){
+	q.attr["Q_ID"] = uniqueID("Q_");
+	var form = document.getElementById("Questionnaire");
+	var qName = form.getElementsByClassName("QuestionnaireName")[0];
+	var name = q.attr["name"];
+	//alter name to be different from original
+	var x = name.lastIndexOf("ver ");
+	if(x > 0){ //if found 'ver '
+		var number = name.slice(x+4);
+		if(!isNaN(number)){
+			name = name.slice(0, x+4) + (Math.floor(+number + 1)).toString();
+		}else{
+			name += " ver 2";
+		}
+	}else{
+		name += " ver 2";
+	}
+	qName.value = name;
+	q.attr["name"] = name;
 	
+	//create QSections on this questionnaire
+	var QSFields = document.getElementById("QFields");
+	var i = 0;
+	for(var QSItem in q.QSection){
+		createQSection();
+		var curQField = QFields.getElementsByClassName("QSection")[i];
+		var inputs = curQField.getElementsByTagName("input");
+		for(var j = 0; j < inputs.length - 1; j++){// length - 1 from add question button
+			inputs[j].value = q.QSection[QSItem][inputs[j].className];
+		}
+		//make all questions
+		var button = inputs[inputs.length - 1];
+		var k = 0; //question counter
+		for(var QuItem in q.QSection[QSItem]["questions"]){
+			createQuestion(button);
+			var curQuestion = curQField.getElementsByClassName("Question")[k];
+			var QuTextField = curQuestion.getElementsByTagName("input")[0];
+			QuTextField.value = q.QSection[QSItem]["questions"][QuItem][QuTextField.className];
+			k++;
+		}
+		//make all optionTitles
+		var optionsElem = curQField.getElementsByClassName("numOptions")[0];
+		numAnswersChanged(optionsElem);
+		k = 0; 
+		allOptTitle = curQField.getElementsByClassName("optionTitle");
+		for(var optItem in q.QSection[QSItem]["options"]){
+			allOptTitle[k].value = q.QSection[QSItem]["options"][optItem];
+			k++;
+		}
+		i++;
+	}
+	
+	//make qu_num => newQu_IDs array
+	var allQuestionElems = form.getElementsByClassName("Question");
+	//sort by question number
+	var allQuByNum = [];
+	for (var i = 0; i < allQuestionElems.length; i++){
+		//compose qu_num => QuElems lookup table
+		allQuByNum[i] = allQuestionElems[i];
+		//convert qu_num => QuElems to qu_num => newQu_IDs
+		for (var Qu_ID in q.attr["QuLinks"]){
+			if(allQuByNum[i] == q.attr["QuLinks"][Qu_ID]){
+				allQuByNum[i] = Qu_ID;
+			}
+		}
+	}
+	//get conversion dict of oldQu_ID => newQu_ID
+	oldIdToNewId = {};
+	//get old questions
+	var allOldQuestions = q.getAllQuestions();
+	for(var oldQu_ID in allOldQuestions){
+		oldIdToNewId[oldQu_ID] = allQuByNum[allOldQuestions[oldQu_ID]["qu_num"]];
+	}
+	
+	//createDiagnosis for this questionnaire
+	var DFields = document.getElementById("DFields");
+	i = 0;
+	for(var DItem in q.Diagnosis){
+		if(DItem.includes("D_") && DItem != "D_ID" && DItem != "Parent_D_ID"){
+			createDSection();
+			var curDField = DFields.getElementsByClassName("DSection")[i];
+			var inputs = curDField.getElementsByTagName("input");
+			for(var j =0; j < inputs.length; j++){
+				// add inputs' past values
+				inputs[j].value = q.Diagnosis[DItem][inputs[j].className];
+			}
+			//find logic section
+			logic = curDField.getElementsByClassName("logic")[0];
+			console.log(logic);
+			//reload logic with new Qu_IDs
+			for(var oldQu_ID in oldIdToNewId){
+				q.Diagnosis[DItem]["logic"] = q.Diagnosis[DItem]["logic"].replace("\"" + oldQu_ID + "\"", "\"" + oldIdToNewId[oldQu_ID] + "\"");
+			}
+			logic.value = q.Diagnosis[DItem]["logic"];
+			console.log(logic.value);
+			i++;
+		}
+	}
+	console.log(q);
 }
 
 function copyQu_ID(clickedElem){
@@ -58,10 +168,13 @@ function submitTester(form){
 	for (i = 0; i < numInputs.length; i++) {
 		onlyNums = onlyNums && (!isNaN(numInputs[i].value) && !numInputs[i].value.includes("."));
 	}
-	if(!filled){
-		alert("Fill out all parts of the form");
-	}else if(!onlyNums){
+	
+	if(!onlyNums){
 		alert("'Number of Possible Answers' needs integer values");
+	}else if(!filled){
+		if(confirm("Not all parts of the form are filled out. Is this okay?")){
+			developQuestionnaire(form);
+		}
 	}else{//continue with submit
 		developQuestionnaire(form);
 	}
@@ -137,7 +250,7 @@ function developQuestionnaire(form){
 
 
 function createQSection(button){
-	var fieldLocation = button.parentElement;
+	var fieldLocation = document.getElementById("QFields");//button.parentElement;
 	var QS_ID = uniqueID("QS_");
 	//create new Section div
 	var newField = document.createElement('div');
@@ -174,7 +287,7 @@ function createQSection(button){
 }
 
 function createDSection(button){
-	var fieldLocation = button.parentElement;
+	var fieldLocation = document.getElementById("DFields");//button.parentElement;
 	var D_ID = uniqueID("D_");
 	//create new Section div
 	var newField = document.createElement('div');
@@ -192,7 +305,13 @@ function createDSection(button){
 	newField = addTextInput(newField, t);
 	t = createTextInput("footnote", "Footnote");
 	newField = addTextInput(newField, t);
-	t = createTextInput("logic", "Logic");
+	//t = createTextInput("logic", "Logic");
+	t = document.createElement("textarea");
+	t.name = "logic";
+	t.placeholder = "Logic";
+	t.className = "logic";
+	t.cols = "80";
+	t.rows = "10";
 	newField = addTextInput(newField, t);
 	//add whole thing;
 	fieldLocation.appendChild(newField);

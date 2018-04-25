@@ -15,8 +15,9 @@ include("includes/DB_Interface/dbLogin.php");
 <script src="assets/js/cookies.js?t=<?=time()?>"></script>
 <script type="text/javascript" src="assets/js/loadPatients.js?t=<?=time()?>"></script>
 <script type="text/javascript" src="assets/js/uniqueID.js?t=<?=time()?>"></script>
+<script type="text/javascript" src="assets/js/Questionnaire.js?t=<?=time()?>"></script>
 <?php include("includes/modalPerson.php"); ?>
-<body onload="sideNavHeight(); modalPerson();" onscroll = "sideNavHeight();">
+<body onload="sideNavHeight(); modalPerson(); onloadPatient();" onscroll = "sideNavHeight();">
 	<div class="mainContent">
 		<?php include("includes/contactsNav.php"); ?>
 		<div id="patientsContent">

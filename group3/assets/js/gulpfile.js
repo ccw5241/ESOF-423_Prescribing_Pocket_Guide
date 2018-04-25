@@ -22,3 +22,10 @@
     var test = printDiag(total);
     document.write("result" + test);
   });
+
+  pat.task('travis',['testServerJS'], function(){
+    let P_ID =1;
+    let fname = "Chen"
+    let lname = "Wei"
+    let mname ="s"
+  });

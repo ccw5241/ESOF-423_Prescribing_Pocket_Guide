@@ -5,6 +5,9 @@ Useful links for the coding standards the client wants (I think)
 http://fhir.cerner.com/millennium/dstu2/
 https://docs.healtheintent.com/#introduction
 
+v2.1.1 -
+	User creation bug hotfix
+
 v2.1 - 
 	Questionnaire updating and duplication added
 	Fixed new user adding patients bug
